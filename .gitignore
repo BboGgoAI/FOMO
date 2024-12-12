@@ -1,0 +1,8 @@
+# git
+.git
+
+# python venv
+bin
+include
+lib
+pyvenv.cfg
