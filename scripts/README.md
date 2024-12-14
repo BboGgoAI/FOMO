@@ -20,3 +20,5 @@
 ```
 > python3 eventbrite.py
 ```
+
+> If you added new python packages that are require to run the scripts, please run `pip freeze > requirements.txt` before pushing the changes.
