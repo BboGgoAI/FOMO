@@ -1,11 +1,20 @@
 import json
-
 import requests
 from bs4 import BeautifulSoup
+from supabase import create_client, Client
+from dotenv import load_dotenv
+import os
 
 # Sample JSON data
 data = {"name": "John", "age": 30, "city": "New York"}
 
+# Load environment variables
+load_dotenv()
+
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def pretty_print(data):
     # Convert the data to a JSON formatted string with 4 spaces of indentation
@@ -51,13 +60,37 @@ def scrape_eventbrite_page(url):
         )
     return events
 
+# Function to upload events to Supabase
+def upload_to_supabase(events):
+    for event in events:
+        response = supabase.table("events").insert({
+            "name": event["Title"],
+            "date": event["Date"],
+            "url": event["Link"],
+            "location": event["Location"]
+        }).execute()
 
-events = []
-i = 0
-while True:
-    events_from_page = scrape_eventbrite_page(BASE_URL + str(i))
-    if len(events_from_page) == 0:
-        break
-    events.append(events_from_page)
-    pretty_print(events)
-    i += 1
+        # Check response for success or error
+        if response.data:  # If data is returned, the insert was successful
+            print(f"Uploaded: {event['Title']}")
+        elif response.error:  # If an error exists, log it
+            print(f"Failed to upload: {event['Title']} - {response.error.message}")
+
+# Main function to scrape and upload all events
+def scrape_and_upload():
+    events = []
+    i = 1  # Start pagination at 1
+    while True:
+        events_from_page = scrape_eventbrite_page(BASE_URL + str(i))
+        if not events_from_page:
+            break
+        events.extend(events_from_page)
+        i += 1
+
+    # pretty_print(events)
+    upload_to_supabase(events)
+    print(f"Uploaded {len(events)} events to Supabase.")
+
+# Run the script
+if __name__ == "__main__":
+    scrape_and_upload()
