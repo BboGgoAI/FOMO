@@ -8,7 +8,7 @@
 > python3 -m venv .
 ```
 
-2. Activate the virtual environmetn
+2. Activate the virtual environment
 ```
 > source bin/activate
 ```
