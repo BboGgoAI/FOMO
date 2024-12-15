@@ -46,8 +46,3 @@ def scrape_events():
         return {"message": "Scraping completed successfully"}
     except subprocess.CalledProcessError as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# @app.get("/")
-# def read_root():
-#     return {"message": "Welcome to the SF Events API!"}

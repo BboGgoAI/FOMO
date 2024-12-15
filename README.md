@@ -26,7 +26,7 @@ The backend will run on http://127.0.0.1:8000/.
 
 ### Frontend Setup
 ```bash
-cd client/sf-events
+cd client
 npm install
 npm run dev
 ```
