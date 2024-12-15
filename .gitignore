@@ -7,3 +7,5 @@ include
 lib
 pyvenv.cfg
 .env
+
+.DS_Store
