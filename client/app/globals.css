@@ -19,3 +19,13 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+:root, body, #map-container {
+  height: 100%;
+  width: 100%;
+}
+
+#map-container {
+  height: 90%;
+  width: 80%;
+}
