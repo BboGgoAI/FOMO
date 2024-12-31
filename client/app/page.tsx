@@ -32,9 +32,10 @@ export default function Home() {
 
       mapboxgl.accessToken =
         "pk.eyJ1Ijoic2Vob2FuYyIsImEiOiJjbTR1bTI2dGYwbjdtMmtwdXRkNnF6eDNtIn0.MBkdVHMHYExKuOl3gwXUFg";
+
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current!,
-        center: [-122.403844, 37.771597],
+        center: [-122.483627, 37.757301],
         zoom: 15,
       });
 
@@ -48,12 +49,21 @@ export default function Home() {
           )
           .addTo(mapRef.current!);
       });
+
+      navigator.geolocation.getCurrentPosition(showPosition);
     }
     fetchEvents();
     return () => {
       mapRef.current!.remove();
     };
   }, []);
+
+  const showPosition = (position: GeolocationPosition) => {
+    mapRef.current?.setCenter([
+      position.coords.longitude,
+      position.coords.latitude,
+    ]);
+  };
 
   return (
     <>
